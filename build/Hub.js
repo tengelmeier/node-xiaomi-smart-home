@@ -8,6 +8,8 @@ const DoorSensor_1 = require("./Sensors/DoorSensor");
 const MotionSensor_1 = require("./Sensors/MotionSensor");
 const Plug_1 = require("./Sensors/Plug");
 const Button_1 = require("./Sensors/Button");
+const WaterLeakSensor_1 = require("./Sensors/WaterLeakSensor");
+const WeatherSensor_1 = require("./Sensors/WeatherSensor");
 class Hub extends events.EventEmitter {
     constructor() {
         super();
@@ -18,13 +20,20 @@ class Hub extends events.EventEmitter {
             button: 'switch',
             plug: 'plug',
             magnet: 'magnet',
-            motion: 'motion'
+            motion: 'motion',
+            weather: 'weather.v1',
+            new_magnet: 'sensor_magnet.aq2',
+            waterleak: 'sensor_wleak.aq1'
         };
         this.clickTypes = {
             click: 'click',
             double_click: 'double_click',
             long_click_press: 'long_click_press',
             long_click_release: 'long_click_release',
+        };
+        this.leakTypes = {
+            leak: 'leak',
+            no_leak: 'no_leak',
         };
     }
     listen() {
@@ -92,6 +101,7 @@ class Hub extends events.EventEmitter {
                 sensor = new THSensor_1.default(sid, this);
                 break;
             case this.sensorTypes.magnet:
+            case this.sensorTypes.new_magnet:
                 sensor = new DoorSensor_1.default(sid, this);
                 break;
             case this.sensorTypes.button:
@@ -102,6 +112,12 @@ class Hub extends events.EventEmitter {
                 break;
             case this.sensorTypes.motion:
                 sensor = new MotionSensor_1.default(sid, this);
+                break;
+            case this.sensorTypes.weather:
+                sensor = new WeatherSensor_1.default(sid, this);
+                break;
+            case this.sensorTypes.waterleak:
+                sensor = new WaterLeakSensor_1.default(sid, this);
                 break;
             default:
                 throw new Error('Type `' + model + '` is not valid, use one of  Hub::sensorTypes');

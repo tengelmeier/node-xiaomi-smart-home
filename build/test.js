@@ -24,4 +24,10 @@ hub.on('data.th', function (sid, temperature, humidity) {
 hub.on('data.plug', function (sid, on) {
     console.info('plug', sid, on);
 });
+hub.on('data.weather', function (sid, temperature, humidity, pressure) {
+    console.info('weather', sid, temperature, humidity, pressure);
+});
+hub.on('data.waterleak', function (sid, leak) {
+    console.info('leak', sid, leak);
+});
 //# sourceMappingURL=test.js.map
